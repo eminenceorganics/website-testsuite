@@ -1,10 +1,12 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium.Chrome;
+using SeleniumExtras.WaitHelpers;
 using WebDriverManager;
 using WebDriverManager.DriverConfigs.Impl;
 using System;
 using System.Threading;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 
 namespace SeleniumTest1
 {
@@ -45,11 +47,12 @@ namespace SeleniumTest1
 
             //Give the page a moment to catchup loading.
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromMilliseconds(500); //.5 seconds
-            
+
             //Search for blueberry
-            var searchBox = driver.FindElement(By.Id("edit-s"));  //Tip: Use "inspect to find a uniqe way to get an element.
-            searchBox.SendKeys("blueberry");
-            searchBox.SendKeys(Keys.Enter);
+            //var searchBox = driver.FindElement(By.Id("edit-s"));  //Tip: Use "inspect to find a uniqe way to get an element.
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(4)); //Max wait of 4 seconds
+            //var searchBox = wait.Until(d => d.FindElement(By.Id("edit-s")));
+            var searchBox = wait.Until(ExpectedConditions.ElementIsVisible(By.Id("edit-s")));
 
             Thread.Sleep(1500); //wait 3.5 seconds just for demo puproses
             driver.Quit();
